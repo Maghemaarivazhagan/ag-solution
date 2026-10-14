@@ -1,0 +1,720 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Handoff Log</title>
+<style>
+/* Final polish. Calm light palette with a teal accent, Figtree sans-serif.
+   Text is 16px or larger. Tap targets are at least 48px. Contrast targets WCAG AA (4.5:1 for body text). */
+@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap");
+:root {
+  --bg: #F4F7F7;
+  --surface: #FFFFFF;
+  --surface-2: #F8FAFA;
+  --ink: #172326;          /* 15.9:1 on surface */
+  --muted: #4F5F65;        /* 7.2:1 on surface */
+  --line: #D3DDDF;
+  --line-strong: #9FB3B7;
+  --accent: #1A6A73;       /* 6.3:1 on white */
+  --accent-hover: #145660;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E1EFF0;
+  --done-fg: #1D6A3E;   --done-bg: #E6F3EB;   --done-bd: #B3D9C1;
+  --prog-fg: #1F5C97;   --prog-bg: #E5EFF9;   --prog-bd: #B3CDE8;
+  --block-fg: #9E3434;  --block-bg: #F8E7E7;  --block-bd: #E3B9B9;
+  --attn-fg: #7A5300;   --attn-bg: #FCF3DA;   --attn-bd: #E6D08C;
+  --danger: #9E3434;
+  --badge-fg: #3D6167;  --badge-bg: #E6EEEF;
+  --focus: #0B4F57;
+  --shadow: 0 1px 2px rgba(20, 40, 45, .06), 0 8px 24px rgba(20, 40, 45, .06);
+  --shadow-hover: 0 2px 4px rgba(20, 40, 45, .08), 0 12px 28px rgba(20, 40, 45, .10);
+  --font: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101719; --surface: #182024; --surface-2: #1D272B;
+    --ink: #EEF4F5; --muted: #AFC0C4; --line: #2E3D41; --line-strong: #56696E;
+    --accent: #7CC4CB; --accent-hover: #98D4D9; --accent-ink: #0B1517; --accent-soft: #1F3A3D;
+    --done-fg: #9ADBB0; --done-bg: #1A2E22; --done-bd: #2E4D3A;
+    --prog-fg: #A6CDF2; --prog-bg: #1A2A3B; --prog-bd: #2E4862;
+    --block-fg: #F2AAAA; --block-bg: #331C1C; --block-bd: #5A3535;
+    --attn-fg: #EDCB7E; --attn-bg: #332A15; --attn-bd: #5A4A2A;
+    --danger: #F2AAAA; --badge-fg: #C2D6D9; --badge-bg: #22353A; --focus: #A6E3E8;
+    --shadow: 0 1px 2px rgba(0,0,0,.35);
+    --shadow-hover: 0 8px 24px rgba(0,0,0,.45);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101719; --surface: #182024; --surface-2: #1D272B;
+  --ink: #EEF4F5; --muted: #AFC0C4; --line: #2E3D41; --line-strong: #56696E;
+  --accent: #7CC4CB; --accent-hover: #98D4D9; --accent-ink: #0B1517; --accent-soft: #1F3A3D;
+  --done-fg: #9ADBB0; --done-bg: #1A2E22; --done-bd: #2E4D3A;
+  --prog-fg: #A6CDF2; --prog-bg: #1A2A3B; --prog-bd: #2E4862;
+  --block-fg: #F2AAAA; --block-bg: #331C1C; --block-bd: #5A3535;
+  --attn-fg: #EDCB7E; --attn-bg: #332A15; --attn-bd: #5A4A2A;
+  --danger: #F2AAAA; --badge-fg: #C2D6D9; --badge-bg: #22353A; --focus: #A6E3E8;
+  --shadow: 0 1px 2px rgba(0,0,0,.35);
+  --shadow-hover: 0 8px 24px rgba(0,0,0,.45);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.6 var(--font);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: anywhere;
+}
+h1, h2, h3 { font-weight: 700; line-height: 1.25; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h2 { font-size: 28px; }
+h3 { font-size: 18px; }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.eyebrow { font-size: 16px; color: var(--accent); font-weight: 600; }
+button, input, textarea, select { font: inherit; font-size: 16px; }
+img, svg { max-width: 100%; }
+
+/* Focus: visible on every interactive element */
+:focus { outline: none; }
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--bg);
+  border-radius: 10px;
+}
+input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 0;
+  border-color: var(--focus);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* Header bar */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  background: var(--surface); border-bottom: 1px solid var(--line);
+  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.topbar-inner {
+  max-width: 920px; margin: 0 auto; padding-block: 12px;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px;
+}
+.brand { font-size: 18px; font-weight: 700; }
+.people { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.person { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+.person .name { font-weight: 600; }
+.person .where { color: var(--muted); }
+.person .clock { font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 600; }
+
+/* Tabs: three equal columns that wrap their labels on phones, so nothing scrolls sideways */
+.tabs-wrap { max-width: 920px; margin: 0 auto; padding-top: 24px; }
+.tabs {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px;
+  padding: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+}
+.tab {
+  background: transparent; border: 0; cursor: pointer; color: var(--muted); font-weight: 600;
+  padding: 12px 10px; min-height: 52px; border-radius: 10px; text-align: center; line-height: 1.25;
+  transition: background-color .15s ease, color .15s ease;
+}
+.tab:hover { color: var(--ink); background: var(--surface-2); }
+.tab[aria-selected="true"] { color: var(--accent-ink); background: var(--accent); }
+.tab[aria-selected="true"]:hover { background: var(--accent-hover); }
+.tab:focus-visible { box-shadow: 0 0 0 4px var(--accent-soft); }
+
+/* Panels */
+main { max-width: 920px; margin: 0 auto; padding-block: 32px 56px; }
+.panel[hidden] { display: none; }
+.panel-head { margin-bottom: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 12px 20px; }
+.panel-head .lead { color: var(--muted); margin-top: 8px; max-width: 60ch; }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: var(--shadow); padding: 28px; min-width: 0;
+}
+.badge {
+  font-size: 16px; font-weight: 600; color: var(--badge-fg); background: var(--badge-bg);
+  padding: 4px 14px; border-radius: 999px; white-space: nowrap;
+}
+
+/* Forms */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.form-grid .wide { grid-column: 1 / -1; }
+.field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.field label { font-size: 16px; font-weight: 600; }
+input, textarea, select {
+  color: var(--ink); background: var(--surface-2); border: 1.5px solid var(--line-strong);
+  border-radius: 10px; padding: 12px 14px; width: 100%; min-width: 0; min-height: 48px;
+  transition: border-color .15s ease;
+}
+input:hover, textarea:hover, select:hover { border-color: var(--accent); }
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
+textarea { min-height: 150px; resize: vertical; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+
+/* Buttons: 48px minimum tap height, clear hover and loading states */
+button.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-weight: 600; cursor: pointer; border-radius: 12px; min-height: 48px; padding: 12px 22px;
+  border: 1.5px solid var(--accent); background: var(--accent); color: var(--accent-ink);
+  transition: background-color .15s ease, border-color .15s ease, transform .1s ease, box-shadow .15s ease;
+}
+button.btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); box-shadow: var(--shadow); }
+button.btn:active { transform: translateY(1px); }
+button.btn.ghost { background: transparent; color: var(--accent); }
+button.btn.ghost:hover { background: var(--accent-soft); color: var(--accent); }
+button.btn:disabled { cursor: progress; opacity: .85; transform: none; }
+button.btn.loading .spinner { display: inline-block; }
+.spinner {
+  display: none; width: 18px; height: 18px; border-radius: 50%;
+  border: 2.5px solid currentColor; border-right-color: transparent;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.error { color: var(--danger); font-weight: 500; margin-top: 12px; min-height: 0; }
+.error:empty { display: none; }
+
+/* Cleanup cards */
+.cleanup { margin-top: 28px; }
+.cleanup[hidden] { display: none; }
+.cleanup-title { font-size: 18px; margin-bottom: 14px; }
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cat {
+  border: 1px solid; border-radius: 14px; padding: 18px 20px; min-width: 0;
+  transition: box-shadow .15s ease, transform .15s ease;
+}
+.cat:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+.cat h3 { font-size: 17px; margin-bottom: 10px; }
+.cat ul { margin: 0; padding-left: 20px; color: var(--ink); }
+.cat li + li { margin-top: 6px; }
+.cat li.none { list-style: none; margin-left: -20px; color: var(--muted); font-style: italic; }
+.cat.done { background: var(--done-bg); border-color: var(--done-bd); }
+.cat.done h3 { color: var(--done-fg); }
+.cat.done li::marker { color: var(--done-fg); }
+.cat.prog { background: var(--prog-bg); border-color: var(--prog-bd); }
+.cat.prog h3 { color: var(--prog-fg); }
+.cat.prog li::marker { color: var(--prog-fg); }
+.cat.block { background: var(--block-bg); border-color: var(--block-bd); }
+.cat.block h3 { color: var(--block-fg); }
+.cat.block li::marker { color: var(--block-fg); }
+.cat.attn { background: var(--attn-bg); border-color: var(--attn-bd); }
+.cat.attn h3 { color: var(--attn-fg); }
+.cat.attn li::marker { color: var(--attn-fg); }
+.save-row { margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+.status { color: var(--muted); font-weight: 500; }
+
+/* Lists and empty states */
+.sub-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 44px 0 0; flex-wrap: wrap; }
+.sub-head h3 { font-size: 20px; }
+.count { color: var(--muted); font-weight: 500; }
+.list { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
+.item {
+  border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; background: var(--surface);
+  min-width: 0; overflow-wrap: anywhere; transition: box-shadow .15s ease, border-color .15s ease;
+}
+.item:hover { box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
+.item-meta { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; color: var(--muted); margin-bottom: 8px; }
+.chip { font-size: 16px; font-weight: 600; padding: 2px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.item .title { font-weight: 600; font-size: 18px; }
+.item .reason { color: var(--muted); margin-top: 6px; }
+.item .body { white-space: pre-wrap; }
+.item .mini { margin-top: 12px; color: var(--muted); line-height: 1.7; }
+.item .mini b { color: var(--ink); font-weight: 600; }
+.empty {
+  border: 1.5px dashed var(--line-strong); border-radius: 14px; padding: 28px 20px;
+  text-align: center; color: var(--muted); background: var(--surface);
+}
+.empty strong { display: block; color: var(--ink); font-size: 18px; margin-bottom: 4px; }
+.search { margin-top: 24px; }
+.search label { font-weight: 600; }
+.search input { margin-top: 8px; background: var(--surface); }
+.search-count { margin-top: 16px; color: var(--muted); font-weight: 500; }
+
+/* Ask */
+.chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.chips button {
+  background: var(--surface-2); color: var(--ink); border: 1.5px solid var(--line-strong); font-weight: 500;
+  min-height: 44px; padding: 8px 16px; border-radius: 999px; cursor: pointer;
+  transition: border-color .15s ease, color .15s ease, background-color .15s ease;
+}
+.chips button:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.answer {
+  margin-top: 24px; border-left: 4px solid var(--accent); background: var(--accent-soft);
+  border-radius: 10px; padding: 18px 20px; min-width: 0; overflow-wrap: anywhere;
+}
+.answer .label { font-size: 16px; color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+.answer .ink { color: var(--ink); }
+.sources { margin: 10px 0 0; padding-left: 20px; color: var(--muted); }
+
+/* Footer */
+footer { border-top: 1px solid var(--line); background: var(--surface); }
+.footer-inner { max-width: 920px; margin: 0 auto; padding-block: 36px 28px; display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px; }
+.footer-inner .lead { color: var(--muted); margin-top: 8px; }
+.footer-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.footer-form .wide { grid-column: 1 / -1; }
+.footer-form textarea { min-height: 96px; }
+.footer-form .row { display: flex; align-items: center; gap: 12px 16px; grid-column: 1 / -1; flex-wrap: wrap; }
+.footer-note { color: var(--muted); padding-bottom: 28px; text-align: center; padding-inline: 16px; }
+
+/* Phones */
+@media (max-width: 640px) {
+  h2 { font-size: 26px; }
+  .topbar-inner { justify-content: center; text-align: center; }
+  .brand { width: 100%; }
+  .people { width: 100%; justify-content: center; gap: 6px 20px; }
+  .tabs-wrap { padding-top: 16px; }
+  .tabs { padding: 4px; gap: 4px; }
+  .tab { font-size: 16px; padding: 10px 6px; min-height: 56px; }
+  main { padding-block: 24px 40px; }
+  .card { padding: 20px 16px; border-radius: 14px; }
+  .form-grid, .cards, .footer-form, .footer-inner { grid-template-columns: 1fr; }
+  .panel-head { flex-direction: column; }
+  .badge { align-self: flex-start; }
+  .actions button.btn, .save-row button.btn, .footer-form button.btn { width: 100%; }
+  .chips button { flex: 1 1 auto; }
+  .item { padding: 16px; }
+}
+@media (hover: none) {
+  button.btn:hover, .cat:hover, .item:hover { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
+</style>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">Handoff Log</span>
+    <div class="people">
+      <div class="person">
+        <span class="name">Maghema R A</span>
+        <span class="where">India</span>
+        <span class="clock" id="clock-maghema">--:--</span>
+      </div>
+      <div class="person">
+        <span class="name">Ashok</span>
+        <span class="where">USA</span>
+        <span class="clock" id="clock-ashok">--:--</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="tabs-wrap">
+  <div class="tabs" role="tablist" aria-label="Sections">
+    <button class="tab" role="tab" id="tab-handoff" aria-controls="panel-handoff" aria-selected="true" tabindex="0">Today's Handoff</button>
+    <button class="tab" role="tab" id="tab-decisions" aria-controls="panel-decisions" aria-selected="false" tabindex="-1">Decision Log</button>
+    <button class="tab" role="tab" id="tab-ask" aria-controls="panel-ask" aria-selected="false" tabindex="-1">Ask Our Notes</button>
+  </div>
+</div>
+
+<main>
+  <!-- Today's Handoff -->
+  <section class="panel" role="tabpanel" id="panel-handoff" aria-labelledby="tab-handoff">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">End of day</p>
+        <h2 style="margin-top:6px">Today's Handoff</h2>
+        <p class="lead">Jot down what happened today. We'll sort it into a clear summary for your teammate.</p>
+      </div>
+      <span class="badge">Cleanup is a preview</span>
+    </div>
+
+    <div class="card">
+      <div class="form-grid">
+        <div class="field">
+          <label for="h-author">Who's writing?</label>
+          <select id="h-author"><option>Maghema R A</option><option>Ashok</option></select>
+        </div>
+        <div class="field">
+          <label for="h-date">Date</label>
+          <input id="h-date" type="date" value="2026-10-14">
+        </div>
+        <div class="field wide">
+          <label for="h-text">Your rough notes</label>
+          <textarea id="h-text" placeholder="e.g. Finished the reminder fix. Waiting on you to confirm the tax line. Blocked on the vendor NDA."></textarea>
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn" id="btn-clean"><span class="spinner" aria-hidden="true"></span><span class="btn-text">Clean up my notes</span></button>
+      </div>
+      <p class="error" id="h-error" role="alert"></p>
+
+      <div id="cleanup" class="cleanup" hidden>
+        <h3 class="cleanup-title">Your tidy summary</h3>
+        <div id="cards" class="cards"></div>
+        <div class="save-row">
+          <button type="button" class="btn" id="btn-save">Save handoff</button>
+          <span class="status" id="save-status" role="status"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-head">
+      <h3>Saved handoffs</h3>
+      <span class="count" id="handoff-count"></span>
+    </div>
+    <div class="list" id="handoff-list" aria-live="polite"></div>
+  </section>
+
+  <!-- Decision Log -->
+  <section class="panel" role="tabpanel" id="panel-decisions" aria-labelledby="tab-decisions" hidden>
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Record</p>
+        <h2 style="margin-top:6px">Decision Log</h2>
+        <p class="lead">Write down what you decided, why, and who made the call, so it's easy to find later.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <form id="decision-form" novalidate>
+        <div class="form-grid">
+          <div class="field wide">
+            <label for="d-decision">What did you decide?</label>
+            <input id="d-decision" type="text" placeholder="e.g. Invoices go out as PDF from the new template">
+          </div>
+          <div class="field wide">
+            <label for="d-reason">Why?</label>
+            <input id="d-reason" type="text" placeholder="The main reason for this choice">
+          </div>
+          <div class="field">
+            <label for="d-date">Date</label>
+            <input id="d-date" type="date" value="2026-10-14">
+          </div>
+          <div class="field">
+            <label for="d-who">Who decided?</label>
+            <select id="d-who"><option>Maghema R A</option><option>Ashok</option></select>
+          </div>
+        </div>
+        <div class="actions"><button type="submit" class="btn">Log this decision</button></div>
+        <p class="error" id="d-error" role="alert"></p>
+      </form>
+    </div>
+
+    <div class="search">
+      <label for="d-search">Search decisions</label>
+      <input id="d-search" type="search" placeholder="Try a word like invoice or standup">
+    </div>
+    <p class="search-count" id="decision-count"></p>
+    <div class="list" id="decision-list" aria-live="polite"></div>
+  </section>
+
+  <!-- Ask Our Notes -->
+  <section class="panel" role="tabpanel" id="panel-ask" aria-labelledby="tab-ask" hidden>
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Questions</p>
+        <h2 style="margin-top:6px">Ask Our Notes</h2>
+        <p class="lead">Answers come only from our saved handoffs and decisions. If the notes don't say, we'll tell you.</p>
+      </div>
+      <span class="badge">Answers are a preview</span>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <label for="q-text">What do you want to know?</label>
+        <input id="q-text" type="text" placeholder="What did we decide about the invoice format last week?">
+      </div>
+      <div class="actions">
+        <button type="button" class="btn" id="btn-ask"><span class="spinner" aria-hidden="true"></span><span class="btn-text">Ask our notes</span></button>
+      </div>
+      <div class="chips" id="q-chips">
+        <button type="button" data-q="What did we decide about the invoice format?">Invoice format decision</button>
+        <button type="button" data-q="What is blocked right now?">What's blocked?</button>
+        <button type="button" data-q="What needs my attention?">What needs attention?</button>
+      </div>
+      <div id="answer-box" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h3>Get in touch</h3>
+      <p class="lead">Have a question about the site? Send us a note.</p>
+    </div>
+    <form class="footer-form" id="contact-form" novalidate>
+      <div class="field">
+        <label for="c-name">Your name</label>
+        <input id="c-name" type="text" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="c-email">Your email</label>
+        <input id="c-email" type="email" autocomplete="email">
+      </div>
+      <div class="field wide">
+        <label for="c-msg">Message</label>
+        <textarea id="c-msg"></textarea>
+      </div>
+      <div class="row">
+        <button type="submit" class="btn">Send note</button>
+        <span class="status" id="c-status" role="status"></span>
+      </div>
+    </form>
+  </div>
+  <p class="footer-note">Prototype. Notes stay in this browser only until the shared database is connected.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "handoff-log-proto-v2";
+  var SAMPLE = {
+    handoffs: [
+      { id: "h1", date: "2026-10-12", author: "Ashok",
+        raw: "Finished the invoice template v2. Waiting on you to confirm the tax line. Blocked on legal review for the vendor NDA. Started the Q4 metrics draft, about half done.",
+        cleaned: { done: ["Finished the invoice template v2."], prog: ["Started the Q4 metrics draft, about half done."], block: ["Blocked on legal review for the vendor NDA."], attn: ["Waiting on you to confirm the tax line."] } },
+      { id: "h2", date: "2026-10-13", author: "Maghema R A",
+        raw: "Shipped the reminder email fix. Need Ashok to decide the invoice format before Friday. Dashboard data is still in progress.",
+        cleaned: { done: ["Shipped the reminder email fix."], prog: ["Dashboard data is still in progress."], block: [], attn: ["Need Ashok to decide the invoice format before Friday."] } }
+    ],
+    decisions: [
+      { id: "d1", date: "2026-10-10", decision: "Invoice format: send PDFs from the new template", reason: "The client asked for a consistent layout, and Word files kept breaking.", who: "Ashok" },
+      { id: "d2", date: "2026-10-11", decision: "Move the daily standup to 9:30 IST", reason: "Gives the US a longer overlap in the morning.", who: "Maghema R A" },
+      { id: "d3", date: "2026-10-13", decision: "Invoice numbers use INV-YYYY-### format", reason: "Makes the sequence easy to sort and audit.", who: "Ashok" }
+    ]
+  };
+
+  var state = load() || JSON.parse(JSON.stringify(SAMPLE));
+
+  function load() {
+    try { var raw = window.localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; }
+    catch (e) { return null; }
+  }
+  function persist() {
+    try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+  }
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function fmtDate(iso) {
+    return new Date(iso + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  }
+  function uid(p) { return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function emptyBox(title, text) { return '<div class="empty"><strong>' + esc(title) + "</strong>" + esc(text) + "</div>"; }
+
+  // Clocks
+  function tick() {
+    [["maghema", "Asia/Kolkata"], ["ashok", "America/New_York"]].forEach(function (p) {
+      $("clock-" + p[0]).textContent = new Date().toLocaleTimeString("en-US", { timeZone: p[1], hour: "numeric", minute: "2-digit" });
+    });
+  }
+  tick();
+  setInterval(tick, 30000);
+
+  // Tabs (arrow keys, Home and End)
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  function showTab(tab, focus) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      $(t.getAttribute("aria-controls")).hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { showTab(t, false); });
+    t.addEventListener("keydown", function (e) {
+      var n = null;
+      if (e.key === "ArrowRight") n = tabs[(i + 1) % tabs.length];
+      if (e.key === "ArrowLeft") n = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (e.key === "Home") n = tabs[0];
+      if (e.key === "End") n = tabs[tabs.length - 1];
+      if (n) { e.preventDefault(); showTab(n, true); }
+    });
+  });
+
+  // Loading state helper for buttons
+  function setLoading(btn, on, label) {
+    btn.disabled = on;
+    btn.classList.toggle("loading", on);
+    btn.setAttribute("aria-busy", on ? "true" : "false");
+    btn.querySelector(".btn-text").textContent = on ? label : btn.getAttribute("data-label");
+  }
+  ["btn-clean", "btn-ask"].forEach(function (id) {
+    var b = $(id);
+    b.setAttribute("data-label", b.querySelector(".btn-text").textContent);
+  });
+
+  // Mock cleanup (stands in for the Claude call)
+  var pending = null;
+  function mockClean(text) {
+    var out = { done: [], prog: [], block: [], attn: [] };
+    text.split(/\n+|(?<=[.!?])\s+/).map(function (s) { return s.trim(); }).filter(Boolean).forEach(function (s) {
+      var l = s.toLowerCase();
+      if (/block|stuck|cannot|can't|waiting on (legal|the vendor)/.test(l)) out.block.push(s);
+      else if (/need|please|decide|confirm|\?|waiting on (you|me)/.test(l)) out.attn.push(s);
+      else if (/in progress|half|started|still|draft|continu|wip/.test(l)) out.prog.push(s);
+      else if (/finish|shipped|done|complete|fixed|sent|merged|released/.test(l)) out.done.push(s);
+      else out.prog.push(s);
+    });
+    return out;
+  }
+  var CATS = [
+    { key: "done", label: "Done", cls: "done", empty: "Nothing finished yet" },
+    { key: "prog", label: "In progress", cls: "prog", empty: "Nothing in progress" },
+    { key: "block", label: "Blocked", cls: "block", empty: "Nothing blocked" },
+    { key: "attn", label: "Needs your attention", cls: "attn", empty: "Nothing needs attention" }
+  ];
+  function renderCards(c) {
+    $("cards").innerHTML = CATS.map(function (k) {
+      var items = c[k.key];
+      var body = items.length
+        ? "<ul>" + items.map(function (i) { return "<li>" + esc(i) + "</li>"; }).join("") + "</ul>"
+        : '<ul><li class="none">' + esc(k.empty) + "</li></ul>";
+      return '<div class="cat ' + k.cls + '"><h3>' + k.label + "</h3>" + body + "</div>";
+    }).join("");
+    $("cleanup").hidden = false;
+  }
+  function hideCards() { pending = null; $("cleanup").hidden = true; $("save-status").textContent = ""; }
+
+  function renderHandoffs() {
+    var n = state.handoffs.length;
+    $("handoff-count").textContent = n ? n + " saved" : "";
+    $("handoff-list").innerHTML = n ? state.handoffs.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; }).map(function (h) {
+      var mini = h.cleaned ? '<div class="mini">' + CATS.filter(function (k) { return h.cleaned[k.key] && h.cleaned[k.key].length; })
+        .map(function (k) { return "<b>" + k.label + ":</b> " + esc(h.cleaned[k.key].join(" ")); }).join("<br>") + "</div>" : "";
+      return '<article class="item">' +
+        '<div class="item-meta"><span class="chip">' + esc(h.author) + "</span><span>" + fmtDate(h.date) + "</span></div>" +
+        '<div class="body">' + esc(h.raw) + "</div>" + mini + "</article>";
+    }).join("") : emptyBox("No handoffs yet", "Write your first note above, then save it here for your teammate.");
+  }
+
+  $("btn-clean").addEventListener("click", function () {
+    var btn = this;
+    var text = $("h-text").value.trim();
+    if (!text) { $("h-error").textContent = "Add a few notes first, then clean them up."; $("h-text").focus(); return; }
+    $("h-error").textContent = "";
+    setLoading(btn, true, "Cleaning up…");
+    setTimeout(function () {
+      pending = { text: text, result: mockClean(text) };
+      renderCards(pending.result);
+      setLoading(btn, false);
+      $("cleanup").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 900);
+  });
+  $("btn-save").addEventListener("click", function () {
+    var text = $("h-text").value.trim();
+    if (!text) { $("h-error").textContent = "Add some notes before saving."; $("h-text").focus(); return; }
+    $("h-error").textContent = "";
+    state.handoffs.push({
+      id: uid("h"),
+      date: $("h-date").value || "2026-10-14",
+      author: $("h-author").value,
+      raw: text,
+      cleaned: pending && pending.text === text ? pending.result : mockClean(text)
+    });
+    persist();
+    $("h-text").value = "";
+    hideCards();
+    $("save-status").textContent = "Saved. Your teammate can see it now.";
+    renderHandoffs();
+  });
+  $("h-text").addEventListener("input", function () { if (pending) hideCards(); });
+
+  // Decisions
+  function renderDecisions() {
+    var q = $("d-search").value.trim().toLowerCase();
+    var rows = state.decisions.filter(function (d) {
+      return !q || (d.decision + " " + d.reason + " " + d.who).toLowerCase().indexOf(q) !== -1;
+    }).sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    $("decision-count").textContent = q ? rows.length + " of " + state.decisions.length + " match" : (state.decisions.length ? state.decisions.length + " recorded" : "");
+    if (!rows.length) {
+      $("decision-list").innerHTML = q
+        ? emptyBox("No matches", "Try a shorter word, or clear the search to see every decision.")
+        : emptyBox("No decisions yet", "Log the first decision above. Include the reason, so the team knows why.");
+      return;
+    }
+    $("decision-list").innerHTML = rows.map(function (d) {
+      return '<article class="item">' +
+        '<div class="item-meta"><span>' + fmtDate(d.date) + '</span><span class="chip">' + esc(d.who) + "</span></div>" +
+        '<div class="title">' + esc(d.decision) + "</div>" +
+        '<div class="reason">Why: ' + esc(d.reason) + "</div></article>";
+    }).join("");
+  }
+  $("decision-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var decision = $("d-decision").value.trim(), reason = $("d-reason").value.trim();
+    if (!decision || !reason) { $("d-error").textContent = "Add both what you decided and why."; (decision ? $("d-reason") : $("d-decision")).focus(); return; }
+    $("d-error").textContent = "";
+    state.decisions.push({ id: uid("d"), date: $("d-date").value || "2026-10-14", decision: decision, reason: reason, who: $("d-who").value });
+    persist();
+    this.reset();
+    $("d-date").value = "2026-10-14";
+    renderDecisions();
+  });
+  $("d-search").addEventListener("input", renderDecisions);
+
+  // Ask Our Notes (mock retrieval)
+  var STOP = { what: 1, did: 1, about: 1, last: 1, week: 1, that: 1, with: 1, from: 1, this: 1, have: 1, right: 1, now: 1, were: 1, does: 1, the: 1, and: 1, for: 1 };
+  function corpus() {
+    var items = state.handoffs.map(function (h) { return { kind: "Handoff", date: h.date, by: h.author, text: h.raw }; });
+    return items.concat(state.decisions.map(function (d) {
+      return { kind: "Decision", date: d.date, by: d.who, text: d.decision + ". Reason: " + d.reason };
+    }));
+  }
+  function answer(question) {
+    var box = $("answer-box");
+    var words = (question.toLowerCase().match(/[a-z0-9]{3,}/g) || []).filter(function (w) { return !STOP[w]; });
+    if (!words.length) {
+      box.innerHTML = '<div class="answer"><div class="label">Answer</div><span class="ink">Ask about a decision, a handoff, or a teammate.</span></div>';
+      return;
+    }
+    var scored = corpus().map(function (it) {
+      var t = it.text.toLowerCase();
+      return { it: it, score: words.reduce(function (n, w) { return n + (t.indexOf(w) !== -1 ? 1 : 0); }, 0) };
+    }).filter(function (s) { return s.score > 0; }).sort(function (a, b) { return b.score - a.score; }).slice(0, 3);
+    if (!scored.length) {
+      box.innerHTML = '<div class="answer"><div class="label">Answer</div><span class="ink">We couldn\'t find that in our handoffs or decisions. Try different words, or log it in the Decision Log.</span></div>';
+      return;
+    }
+    var top = scored[0].it;
+    var lead = top.kind === "Decision"
+      ? "The closest decision is from " + fmtDate(top.date) + ": " + top.text + "."
+      : "The closest note is " + top.by + "'s handoff from " + fmtDate(top.date) + ": " + top.text;
+    box.innerHTML = '<div class="answer"><div class="label">Answer (preview)</div><p class="ink">' + esc(lead) +
+      '</p><p style="margin-top:12px;font-weight:600">Sources</p><ul class="sources">' +
+      scored.map(function (s) { return "<li>" + esc(s.it.kind) + ", " + fmtDate(s.it.date) + ", " + esc(s.it.by) + "</li>"; }).join("") +
+      "</ul></div>";
+  }
+  function ask(question) {
+    var btn = $("btn-ask");
+    setLoading(btn, true, "Looking…");
+    setTimeout(function () { answer(question); setLoading(btn, false); }, 900);
+  }
+  $("btn-ask").addEventListener("click", function () { ask($("q-text").value); });
+  $("q-text").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); ask(this.value); } });
+  $("q-chips").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-q]");
+    if (!b) return;
+    $("q-text").value = b.getAttribute("data-q");
+    ask(b.getAttribute("data-q"));
+  });
+
+  // Footer (demo only)
+  $("contact-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var msg = $("c-msg").value.trim();
+    if (!msg || !/^\S+@\S+\.\S+$/.test($("c-email").value.trim())) { $("c-status").textContent = "Add a valid email and a message."; return; }
+    $("c-status").textContent = "Preview only. This note wasn't sent.";
+    this.reset();
+  });
+
+  renderHandoffs();
+  renderDecisions();
+  answer("");
+})();
+</script>
