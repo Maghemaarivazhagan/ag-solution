@@ -13,7 +13,7 @@ npm run dev
 
 Open http://localhost:3000.
 
-vercel deployment https://vercel.com/maghemaarivazhagan36-1449s-projects/ag-solution/A5w57XC2JjanPaymEPHJfmSgvorZ
+vercel https://ag-solution.vercel.app/
 
 Other scripts: `npm run build`, `npm run start`, `npm run lint`, `npm run typecheck`.
 
